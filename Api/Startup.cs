@@ -25,7 +25,12 @@ namespace Api
             {
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            //if we dont add cors, another program cannot use our API data
+            services.AddCors(opt =>{
+                opt.AddPolicy("CorsPolicy",policy=>{
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                });
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -42,7 +47,9 @@ namespace Api
                 //app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            //this cors is middle ware configured in services. allows only localhost 3000 to get the data from api
+            //can also write, or do anything with the data
+            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }

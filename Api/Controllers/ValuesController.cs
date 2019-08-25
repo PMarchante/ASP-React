@@ -5,7 +5,7 @@ using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-
+// all this does is serve up the data in the database
 namespace Api.Controllers {
     [Route ("api/[controller]")]
     [ApiController]
