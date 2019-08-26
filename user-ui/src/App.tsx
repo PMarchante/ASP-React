@@ -19,7 +19,7 @@ class App extends Component {
       <div>
         <Header as='h2'>
           <Icon name='users' />
-          <Header.Content>Uptime Guarantee</Header.Content>
+          <Header.Content>The stuff from API</Header.Content>
         </Header>
         <List>
           {this.state.values.map((value: any) => (
