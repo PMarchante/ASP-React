@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using App.Activities;
@@ -24,6 +25,19 @@ namespace Api.Controllers
         public async Task<ActionResult<List<Activity>>> List()
         {
             return await mediator.Send(new List.Query());
+        }
+
+        //this method will return a single record from the database, based on the id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Activity>> getDetails(Guid id)
+        {
+            return await mediator.Send(new Details.Query{Id = id});
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Unit>> createActivity(Create.Command command)
+        {
+            return await mediator.Send(command);
         }
     }
 }

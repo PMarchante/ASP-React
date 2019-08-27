@@ -8,9 +8,9 @@ using Persistence;
 
 namespace App.Activities
 {
+    //this class will return a list of all activities in the db
     public class List
     {
-        //this class will return a list with activity objects
         public class Query:IRequest<List<Activity>>{}
 
         //the handler class is in charge of looking at the request and returning a list of the results
