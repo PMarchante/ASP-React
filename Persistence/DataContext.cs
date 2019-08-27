@@ -11,7 +11,7 @@ namespace Persistence
 
         //the values name after Dbset<Value> is what will be used as the table name in the db
         public DbSet<Value> values { get; set; }
-
+        public DbSet<Activity> Activities {get;set;}
         protected override void OnModelCreating(ModelBuilder builder){
             builder.Entity<Value>().HasData(
                 new Value {Id=1, Name="value 1"},
