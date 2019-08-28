@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import { IActivity } from "../models/activity";
 import NavBar from "../../features/nav/NavBar";
+import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 
 const App = () => {
   //this uses hooks to change the way we set state and manipulate it
@@ -24,13 +25,7 @@ const App = () => {
     <Fragment>
       <NavBar />
       <Container style={{ marginTop: 70 }}>
-        <List>
-          {activities.map(activityWegotBack => (
-            <List.Item key={activityWegotBack.id}>
-              {activityWegotBack.title}
-            </List.Item>
-          ))}
-        </List>
+        <ActivityDashboard activities ={activities}/>
       </Container>
     </Fragment>
   );
