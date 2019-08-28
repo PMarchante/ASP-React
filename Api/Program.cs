@@ -13,6 +13,7 @@ namespace Api
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
+            //this will create a db migration and seed data if one does not exist
             using (var scope = host.Services.CreateScope())
             {
                 var Services=scope.ServiceProvider;
