@@ -1,7 +1,7 @@
-import React, { useState, FormEvent } from 'react';
-import { Segment, Form, Button } from 'semantic-ui-react';
-import { IActivity } from '../../../app/models/activity';
-import { v4 as uuid } from 'uuid';
+import React, { useState, FormEvent } from "react";
+import { Segment, Form, Button } from "semantic-ui-react";
+import { IActivity } from "../../app/models/activity";
+import { v4 as uuid } from "uuid";
 
 interface IProps {
   setEditMode: (editMode: boolean) => void;
@@ -20,13 +20,13 @@ const ActivityForm: React.FC<IProps> = ({
       return initialFormState;
     } else {
       return {
-        id: '',
-        title: '',
-        category: '',
-        description: '',
-        date: '',
-        city: '',
-        venue: ''
+        id: "",
+        title: "",
+        category: "",
+        description: "",
+        date: "",
+        city: "",
+        venue: ""
       };
     }
   };

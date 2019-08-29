@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Axios from "axios";
 import { IActivity } from "./app/models/activity";
 import NavBar from "./components/nav/NavBar";
-import ActivityDashboard from "./components/activities/dashboard/ActivityDashboard";
+import ActivityDashboard from "./components/activities/ActivityDashboard";
 
 const App = () => {
   //this uses hooks to change the way we set state and manipulate it

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Grid } from 'semantic-ui-react';
-import { IActivity } from '../../../app/models/activity';
-import ActivityList from './ActivityList';
-import ActivityDetails from '../details/ActivityDetails';
-import ActivityForm from '../Form/ActivityForm';
+import React from "react";
+import { Grid } from "semantic-ui-react";
+import { IActivity } from "../../app/models/activity";
+import ActivityList from "./ActivityList";
+import ActivityDetails from "./ActivityDetails";
+import ActivityForm from "./ActivityForm";
 //make an interface so the component knows it is getting a prop of type IActivity
 interface IProps {
   activities: IActivity[];
