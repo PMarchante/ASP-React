@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
-import { Grid, GridColumn, List } from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
-import ActivityList from "./ActivityList";
-import ActivityDetails from "../details/ActivityDetails";
-import ActivityForm from "../Form/ActivityForm";
+import React from 'react';
+import { Grid } from 'semantic-ui-react';
+import { IActivity } from '../../../app/models/activity';
+import ActivityList from './ActivityList';
+import ActivityDetails from '../details/ActivityDetails';
+import ActivityForm from '../Form/ActivityForm';
 //make an interface so the component knows it is getting a prop of type IActivity
 interface IProps {
   activities: IActivity[];
@@ -11,7 +11,10 @@ interface IProps {
   selectedActivity: IActivity | null;
   editMode: boolean;
   setEditMode: (editMode: boolean) => void;
-  setSelectedActivity: (activity: IActivity | null)=>void;
+  setSelectedActivity: (activity: IActivity | null) => void;
+  createActivity: (activity: IActivity) => void;
+  editActivity: (activity: IActivity) => void;
+  deleteActivity: (id: string) => void;
 }
 const ActivityDashboard: React.FC<IProps> = ({
   activities,
@@ -19,12 +22,19 @@ const ActivityDashboard: React.FC<IProps> = ({
   selectedActivity,
   editMode,
   setEditMode,
-  setSelectedActivity
+  setSelectedActivity,
+  createActivity,
+  editActivity,
+  deleteActivity
 }) => {
   return (
     <Grid>
       <Grid.Column width={10}>
-        <ActivityList activities={activities} selectActivity={selectActivity} />
+        <ActivityList
+          activities={activities}
+          selectActivity={selectActivity}
+          deleteActivity={deleteActivity}
+        />
       </Grid.Column>
 
       <Grid.Column width={6}>
@@ -38,7 +48,16 @@ const ActivityDashboard: React.FC<IProps> = ({
             setSelectedActivity={setSelectedActivity}
           />
         )}
-        {editMode && <ActivityForm  setEditMode={setEditMode}/>}
+        {editMode && (
+          <ActivityForm
+            //gave this key so the component will rerender if we change the selected activity
+            key={(selectedActivity && selectedActivity.id) || 0}
+            setEditMode={setEditMode}
+            activity={selectedActivity!}
+            createActivity={createActivity}
+            editActivity={editActivity}
+          />
+        )}
       </Grid.Column>
     </Grid>
   );

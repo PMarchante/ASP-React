@@ -1,16 +1,21 @@
-import React from "react";
-import { IActivity } from "../../../app/models/activity";
-import { Item, Button, Label, Segment } from "semantic-ui-react";
+import React from 'react';
+import { IActivity } from '../../../app/models/activity';
+import { Item, Button, Label, Segment } from 'semantic-ui-react';
 interface IProps {
   activities: IActivity[];
   selectActivity: (id: string) => void;
+  deleteActivity: (id: string) => void;
 }
 
-const ActivityList: React.FC<IProps> = ({ activities, selectActivity }) => {
+const ActivityList: React.FC<IProps> = ({
+  activities,
+  selectActivity,
+  deleteActivity
+}) => {
   return (
     <Segment clearing>
       <Item.Group divided>
-        {activities.map(activity => (
+        {activities.map((activity) => (
           <Item>
             <Item.Content>
               <Item.Header>{activity.title}</Item.Header>
@@ -28,12 +33,17 @@ const ActivityList: React.FC<IProps> = ({ activities, selectActivity }) => {
                   content='view'
                   color='pink'
                 />
+                <Button
+                  onClick={() => deleteActivity(activity.id)}
+                  content='delete'
+                  color='yellow'
+                  floated='right'
+                />
                 <Label basic content={activity.category} />
               </Item.Extra>
             </Item.Content>
           </Item>
         ))}
-        
       </Item.Group>
     </Segment>
   );
