@@ -33,7 +33,7 @@ const ActivityList: React.FC<IProps> = ({ activities, selectActivity }) => {
             </Item.Content>
           </Item>
         ))}
-        ;
+        
       </Item.Group>
     </Segment>
   );

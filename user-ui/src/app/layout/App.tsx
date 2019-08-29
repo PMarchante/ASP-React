@@ -17,6 +17,13 @@ const App = () => {
   const handleSelectActivity = (id: string) => {
     setSelectedActivity(activities.filter(a => a.id === id)[0]);
   };
+
+  //this handler will set the stage for creating an activity
+  const handleCreateForm = ()=>{
+    setSelectedActivity(null);
+    setEditMode(true);
+  }
+
   //this uses hooks to take the place of componentDidMount, componentDidUpdate, and componentDidUnmount
   useEffect(() => {
     //we are telling axios that the response we are getting is of type IActivity
@@ -25,12 +32,12 @@ const App = () => {
         setActivities(Response.data);
       }
     );
-  }, []); //this empty array is VERY IMPORTANT! it makes it so we dont keep running the request a ton of times
+  }, []) //this empty array is VERY IMPORTANT! it makes it so we dont keep running the request a ton of times
 
   //using fragment is a better way to return multiple components instead of returning them in a div
   return (
     <Fragment>
-      <NavBar />
+      <NavBar createActivity={handleCreateForm}/>
       <Container style={{ marginTop: 70 }}>
         <ActivityDashboard
           activities={activities}
@@ -38,6 +45,8 @@ const App = () => {
           selectedActivity={selectedActivity} //the exclamation mark tells typescript that this prop can be an Iactivity or null
           editMode={editMode}
           setEditMode={setEditMode}
+          setSelectedActivity={setSelectedActivity}
+          
         />
       </Container>
     </Fragment>
