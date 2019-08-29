@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Header, Icon, List, Container } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { useState, useEffect } from "react";
 import Axios from "axios";
 import { IActivity } from "../models/activity";
@@ -9,7 +9,14 @@ import ActivityDashboard from "../../features/activities/dashboard/ActivityDashb
 const App = () => {
   //this uses hooks to change the way we set state and manipulate it
   const [activities, setActivities] = useState<IActivity[]>([]);
+  const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
+    null
+  );
+  const [editMode, setEditMode] = useState(false);
 
+  const handleSelectActivity = (id: string) => {
+    setSelectedActivity(activities.filter(a => a.id === id)[0]);
+  };
   //this uses hooks to take the place of componentDidMount, componentDidUpdate, and componentDidUnmount
   useEffect(() => {
     //we are telling axios that the response we are getting is of type IActivity
@@ -25,7 +32,13 @@ const App = () => {
     <Fragment>
       <NavBar />
       <Container style={{ marginTop: 70 }}>
-        <ActivityDashboard activities ={activities}/>
+        <ActivityDashboard
+          activities={activities}
+          selectActivity={handleSelectActivity}
+          selectedActivity={selectedActivity} //the exclamation mark tells typescript that this prop can be an Iactivity or null
+          editMode={editMode}
+          setEditMode={setEditMode}
+        />
       </Container>
     </Fragment>
   );

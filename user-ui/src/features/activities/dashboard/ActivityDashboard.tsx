@@ -1,20 +1,44 @@
-import React, { Fragment } from 'react';
-import { Grid, GridColumn, List } from 'semantic-ui-react';
-import { IActivity } from '../../../app/models/activity';
-import ActivityList from './ActivityList';
+import React, { Fragment } from "react";
+import { Grid, GridColumn, List } from "semantic-ui-react";
+import { IActivity } from "../../../app/models/activity";
+import ActivityList from "./ActivityList";
+import ActivityDetails from "../details/ActivityDetails";
+import ActivityForm from "../Form/ActivityForm";
 //make an interface so the component knows it is getting a prop of type IActivity
-interface IProps{
-    activities:IActivity[]
+interface IProps {
+  activities: IActivity[];
+  selectActivity: (id: string) => void;
+  selectedActivity: IActivity | null;
+  editMode: boolean;
+  setEditMode: (editMode: boolean) => void;
 }
-const ActivityDashboard: React.FC<IProps> =({activities})=>{
-
-    return(
+const ActivityDashboard: React.FC<IProps> = ({
+  activities,
+  selectActivity,
+  selectedActivity,
+  editMode,
+  setEditMode
+}) => {
+  return (
     <Grid>
-        <Grid.Column width={10}>
-          <ActivityList activities={activities}/>
-        </Grid.Column>
+      <Grid.Column width={10}>
+        <ActivityList activities={activities} selectActivity={selectActivity} />
+      </Grid.Column>
+
+      <Grid.Column width={6}>
+        {
+          //the && means that component will only be rendered if not null
+        }
+        {selectedActivity && !editMode && (
+          <ActivityDetails
+            activity={selectedActivity}
+            setEditMode={setEditMode}
+          />
+        )}
+        {editMode && <ActivityForm />}
+      </Grid.Column>
     </Grid>
-    );
-}
+  );
+};
 
 export default ActivityDashboard;
