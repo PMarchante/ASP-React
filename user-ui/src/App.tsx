@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
-import { Container } from 'semantic-ui-react';
-import { useState, useEffect } from 'react';
-import Axios from 'axios';
-import { IActivity } from '../models/activity';
-import NavBar from '../../features/nav/NavBar';
-import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
+import React, { Fragment } from "react";
+import { Container } from "semantic-ui-react";
+import { useState, useEffect } from "react";
+import Axios from "axios";
+import { IActivity } from "./app/models/activity";
+import NavBar from "./components/nav/NavBar";
+import ActivityDashboard from "./components/activities/dashboard/ActivityDashboard";
 
 const App = () => {
   //this uses hooks to change the way we set state and manipulate it
@@ -15,7 +15,7 @@ const App = () => {
   const [editMode, setEditMode] = useState(false);
 
   const handleSelectActivity = (id: string) => {
-    setSelectedActivity(activities.filter((a) => a.id === id)[0]);
+    setSelectedActivity(activities.filter(a => a.id === id)[0]);
     setEditMode(false);
   };
 
@@ -32,26 +32,23 @@ const App = () => {
   };
 
   const handleEditActivity = (activity: IActivity) => {
-    setActivities([
-      ...activities.filter((a) => a.id !== activity.id),
-      activity
-    ]);
+    setActivities([...activities.filter(a => a.id !== activity.id), activity]);
     setSelectedActivity(activity);
     setEditMode(false);
   };
 
   const handleDelete = (id: string) => {
-    setActivities([...activities.filter((a) => a.id !== id)]);
+    setActivities([...activities.filter(a => a.id !== id)]);
   };
 
   //this uses hooks to take the place of componentDidMount, componentDidUpdate, and componentDidUnmount
   useEffect(() => {
     //we are telling axios that the response we are getting is of type IActivity
-    Axios.get<IActivity[]>('http://localhost:5000/api/activities').then(
-      (Response) => {
+    Axios.get<IActivity[]>("http://localhost:5000/api/activities").then(
+      Response => {
         let formattedDateActivity: IActivity[] = [];
-        Response.data.forEach((activity) => {
-          activity.date = activity.date.split('.')[0];
+        Response.data.forEach(activity => {
+          activity.date = activity.date.split(".")[0];
           formattedDateActivity.push(activity);
         });
         setActivities(formattedDateActivity);
