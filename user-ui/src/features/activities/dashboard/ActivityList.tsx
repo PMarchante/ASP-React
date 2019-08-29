@@ -1,6 +1,6 @@
-import React from 'react';
-import { IActivity } from '../../../app/models/activity';
-import { Item, Button, Label, Segment } from 'semantic-ui-react';
+import React from "react";
+import { IActivity } from "../../../app/models/activity";
+import { Item, Button, Label, Segment } from "semantic-ui-react";
 interface IProps {
   activities: IActivity[];
   selectActivity: (id: string) => void;
@@ -15,8 +15,8 @@ const ActivityList: React.FC<IProps> = ({
   return (
     <Segment clearing>
       <Item.Group divided>
-        {activities.map((activity) => (
-          <Item>
+        {activities.map(activity => (
+          <Item key={activity.id}>
             <Item.Content>
               <Item.Header>{activity.title}</Item.Header>
               <Item.Meta>{activity.date}</Item.Meta>
