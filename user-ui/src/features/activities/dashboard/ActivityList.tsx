@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { IActivity } from "../../../app/models/activity";
 import { Item, Button, Label, Segment } from "semantic-ui-react";
 interface IProps {
@@ -13,7 +13,7 @@ const ActivityList: React.FC<IProps> = ({ activities, selectActivity }) => {
         {activities.map(activity => (
           <Item>
             <Item.Content>
-              <Item.Header as='a'>{activity.title}</Item.Header>
+              <Item.Header>{activity.title}</Item.Header>
               <Item.Meta>{activity.date}</Item.Meta>
               <Item.Description>
                 <div>{activity.description}</div>

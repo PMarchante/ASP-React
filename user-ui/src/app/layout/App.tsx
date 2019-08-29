@@ -45,8 +45,7 @@ const App = () => {
           selectedActivity={selectedActivity} //the exclamation mark tells typescript that this prop can be an Iactivity or null
           editMode={editMode}
           setEditMode={setEditMode}
-          setSelectedActivity={setSelectedActivity}
-          
+          setSelectedActivity={setSelectedActivity}         
         />
       </Container>
     </Fragment>
