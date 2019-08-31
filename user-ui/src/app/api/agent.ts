@@ -12,6 +12,7 @@ axios.interceptors.response.use(undefined, error => {
   const { status, data, config } = error.response;
   if (status === 404) {
     history.push("/notFound");
+    toast.error("Could not find activity");
   }
   if (
     status === 400 &&
