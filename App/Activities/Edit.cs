@@ -1,6 +1,9 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Errors;
+using FluentValidation;
 using MediatR;
 using Persistence;
 namespace App.Activities
@@ -17,6 +20,21 @@ namespace App.Activities
             public string City{get;set;}
             public string Venue{get;set;}
         }
+
+        public class CommandValidator:AbstractValidator<Command>
+                {
+
+                    public CommandValidator()
+                    {
+                        RuleFor(x=> x.Title).NotEmpty();
+                        RuleFor(x=> x.Description).NotEmpty();
+                        RuleFor(x=> x.Category).NotEmpty();
+                        RuleFor(x=> x.Date).NotEmpty();
+                        RuleFor(x=> x.City).NotEmpty();
+                        RuleFor(x=> x.Venue).NotEmpty();
+                    }
+                }
+
         public class Handler : IRequestHandler<Command>
         {
             private readonly DataContext context;
@@ -31,7 +49,7 @@ namespace App.Activities
                 var activity = await context.Activities.FindAsync(request.Id);
 
                 if(activity==null)
-                    throw new Exception("could not find activity");
+                    throw new RestException(HttpStatusCode.NotFound,new {activity = "Id not found, could not delete"});
 
                 //this means that the activity title will be changed to the passed in update to change the title.
                 //but if the passed in request is null. shown by the ??. then keep the old update. 

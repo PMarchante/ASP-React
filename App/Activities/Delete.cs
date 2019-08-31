@@ -1,6 +1,8 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Errors;
 using MediatR;
 using Persistence;
 
@@ -28,7 +30,7 @@ namespace App.Activities
                 var activity = await context.Activities.FindAsync(request.Id);
 
                 if(activity==null)
-                    throw new Exception("Id not found, could not delete");
+                    throw new RestException(HttpStatusCode.NotFound,new {activity = "Id not found, could not delete"});
                 
                 context.Remove(activity);
 
@@ -37,7 +39,7 @@ namespace App.Activities
                 if(success)
                     return Unit.Value;
                 
-                throw new Exception("could not delete");
+                throw new Exception("could not save changes");
             }
         }
     }

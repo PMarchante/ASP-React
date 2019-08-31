@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
+using FluentValidation.AspNetCore;
+using Api.MiddleWare;
 
 namespace Api
 {
@@ -34,15 +36,21 @@ namespace Api
             });
             //this mediator service adds the list of all handlers to the services container
             services.AddMediatR(typeof(List.Handler).Assembly);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //the add fluent valudation is a package downloaded to help validate input client side
+            //it takes in the class where validations will occur
+            services.AddMvc().AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Create>())
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //this will handel all errors by returning our own customized responses
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
             else
             {

@@ -23,10 +23,12 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
 
   useEffect(() => {
     loadActivity(match.params.id);
-  }, [loadActivity, match.params.id]); //will run once when the component mounts because of the dependency array
+  }, [loadActivity, match.params.id, history]); //will run once when the component mounts because of the dependency array
 
-  if (loadingInitial || !activity)
-    return <LoadingComponent content='Loading...' />;
+  if (loadingInitial) return <LoadingComponent content='Loading...' />;
+
+  if (!activity) return <h2>Activity Not found</h2>;
+
   return (
     <Grid>
       <Grid.Column width={10}>
