@@ -1,38 +1,37 @@
-import axios, { AxiosResponse } from "axios";
-import { IActivity } from "../models/activity";
-import { history } from "../..";
-import { toast } from "react-toastify";
+import axios, { AxiosResponse } from 'axios'
+import { IActivity } from '../models/activity'
+import { history } from '../..'
+import { toast } from 'react-toastify'
 
-axios.defaults.baseURL = "http://localhost:5000/api/";
+axios.defaults.baseURL = 'http://localhost:5000/api/'
 
 axios.interceptors.response.use(undefined, error => {
-  if (error.message === "Network Error" && !error.response) {
-    toast.error("Start API server");
+  if (error.message === 'Network Error' && !error.response) {
+    toast.error('Start API server')
   }
-  const { status, data, config } = error.response;
+  const { status, data, config } = error.response
   if (status === 404) {
-    history.push("/notFound");
-    toast.error("Could not find activity");
+    history.push('/notFound')
+    toast.error('Could not find activity')
   }
   if (
     status === 400 &&
-    config.method === "get" &&
-    data.errors.hasOwnProperty("id")
+    config.method === 'get' &&
+    data.errors.hasOwnProperty('id')
   ) {
-    history.push("/notFound");
+    history.push('/notFound')
   }
   if (status === 500) {
-    toast.error("Server error -check terminal");
+    toast.error('Server error -check terminal')
   }
-});
+  throw error
+})
 
-const responseBody = (response: AxiosResponse) => response.data;
+const responseBody = (response: AxiosResponse) => response.data
 
 //this function will simulate load and wait time from the server
 const sleep = (ms: number) => (response: AxiosResponse) =>
-  new Promise<AxiosResponse>(resolve =>
-    setTimeout(() => resolve(response), ms)
-  );
+  new Promise<AxiosResponse>(resolve => setTimeout(() => resolve(response), ms))
 const requests = {
   get: (url: string) =>
     axios
@@ -54,16 +53,16 @@ const requests = {
       .delete(url)
       .then(sleep(1000))
       .then(responseBody)
-};
+}
 
 //all the activities requests are going to go inside this activities object
 const Activities = {
-  list: (): Promise<IActivity[]> => requests.get("/activities"),
+  list: (): Promise<IActivity[]> => requests.get('/activities'),
   details: (id: string) => requests.get(`/activities/${id}`),
-  create: (activity: IActivity) => requests.post("/activities", activity),
+  create: (activity: IActivity) => requests.post('/activities', activity),
   update: (activity: IActivity) =>
     requests.put(`/activities/${activity.id}`, activity),
   delete: (id: string) => requests.del(`/activities/${id}`)
-};
+}
 
-export default { Activities };
+export default { Activities }
