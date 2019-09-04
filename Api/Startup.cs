@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using FluentValidation.AspNetCore;
 using Api.MiddleWare;
+using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Api
 {
@@ -40,7 +42,19 @@ namespace Api
             //it takes in the class where validations will occur
             services.AddMvc().AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Create>())
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
+            //addidentitycore adds and configures identity system base on used type roles
+            //we have to pass in the use type
+            var builder = services.AddIdentityCore<AppUser>();
+
+            //
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+
+            //creates user stores
+            identityBuilder.AddEntityFrameworkStores<DataContext>();
+
+            //need this service to manage the sign in of users
+            identityBuilder.AddSignInManager<SignInManager<AppUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

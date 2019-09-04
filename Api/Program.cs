@@ -1,6 +1,8 @@
 ﻿using System;
+using Domain;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -19,8 +21,11 @@ namespace Api
                 var Services=scope.ServiceProvider;
                 try{
                     var context = Services.GetRequiredService<DataContext>();
+                    var userManager = Services.GetRequiredService<UserManager<AppUser>>();
                     context.Database.Migrate();
-                    Seed.SeedData(context);
+                    //have to use wait because the seed method is now async and get the
+                    // user manager class
+                    Seed.SeedData(context, userManager).Wait();
                 }
                 catch(Exception e){
                     var logger = Services.GetRequiredService<ILogger<Program>>();
