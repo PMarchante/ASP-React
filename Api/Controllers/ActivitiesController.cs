@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using App.Activities;
 using Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -23,6 +24,7 @@ namespace Api.Controllers
 
         //this method will return a single record from the database, based on the id
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<Activity>> getDetails(Guid id)
         {
             return await Mediator.Send(new Details.Query{Id = id});

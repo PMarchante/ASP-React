@@ -11,6 +11,11 @@ using FluentValidation.AspNetCore;
 using Api.MiddleWare;
 using Domain;
 using Microsoft.AspNetCore.Identity;
+using App.Interfaces;
+using Infrastructure.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Api
 {
@@ -55,6 +60,20 @@ namespace Api
 
             //need this service to manage the sign in of users
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
+            AddJwtBearer(Opt=>{
+                Opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key,
+                    ValidateAudience = false,
+                    ValidateIssuer = false
+                };
+            });
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +93,7 @@ namespace Api
 
             //this cors is middle ware configured in services. allows only localhost 3000 to get the data from api
             //can also write, or do anything with the data
+            app.UseAuthentication();
             app.UseCors("CorsPolicy");
             app.UseMvc();
         }
