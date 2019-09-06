@@ -16,6 +16,8 @@ using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Api
 {
@@ -45,7 +47,13 @@ namespace Api
             services.AddMediatR(typeof(List.Handler).Assembly);
             //the add fluent valudation is a package downloaded to help validate input client side
             //it takes in the class where validations will occur
-            services.AddMvc().AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Create>())
+            services.AddMvc(opt=>{
+                //this code will only allow logged in users to acces the data in the api
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            })
+            
+            .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Create>())
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //addidentitycore adds and configures identity system base on used type roles
@@ -61,7 +69,9 @@ namespace Api
             //need this service to manage the sign in of users
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+            //this token key is stored in local development machine and will have to be regenerated if i clone the
+            //project somewhere else. it will only work in development mode
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
             AddJwtBearer(Opt=>{
                 Opt.TokenValidationParameters = new TokenValidationParameters
@@ -74,6 +84,9 @@ namespace Api
             });
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+            
+            //this will let us get the username from the token
+            services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
