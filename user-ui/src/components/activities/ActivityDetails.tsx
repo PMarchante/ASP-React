@@ -1,33 +1,33 @@
-import React, { useContext, useEffect } from "react";
-import { Grid } from "semantic-ui-react";
-import { observer } from "mobx-react-lite";
-import ActivityStore from "../../app/stores/activityStore";
-import { RouteComponentProps } from "react-router";
-import LoadingComponent from "../misc/LoadingComponent";
-import ActivityDetailHeader from "./ActivityDetailHeader";
-import ActivityDetailedInfo from "./ActivityDetailedInfo";
-import ActivityDetailedChat from "./ActivityDetailedChat";
-import ActivitySideBar from "./ActivitySideBar";
+import React, { useContext, useEffect } from 'react'
+import { Grid } from 'semantic-ui-react'
+import { observer } from 'mobx-react-lite'
+import { RouteComponentProps } from 'react-router'
+import LoadingComponent from '../misc/LoadingComponent'
+import ActivityDetailHeader from './ActivityDetailHeader'
+import ActivityDetailedInfo from './ActivityDetailedInfo'
+import ActivityDetailedChat from './ActivityDetailedChat'
+import ActivitySideBar from './ActivitySideBar'
+import { RootStoreContext } from '../../app/stores/rootStore'
 
 interface DetailParams {
-  id: string;
+  id: string
 }
 
 const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
   match,
   history
 }) => {
-  const activityStore = useContext(ActivityStore);
+  const rootStore = useContext(RootStoreContext)
 
-  const { activity, loadActivity, loadingInitial } = activityStore;
+  const { activity, loadActivity, loadingInitial } = rootStore.activityStore
 
   useEffect(() => {
-    loadActivity(match.params.id);
-  }, [loadActivity, match.params.id, history]); //will run once when the component mounts because of the dependency array
+    loadActivity(match.params.id)
+  }, [loadActivity, match.params.id, history]) //will run once when the component mounts because of the dependency array
 
-  if (loadingInitial) return <LoadingComponent content='Loading...' />;
+  if (loadingInitial) return <LoadingComponent content='Loading...' />
 
-  if (!activity) return <h2>Activity Not found</h2>;
+  if (!activity) return <h2>Activity Not found</h2>
 
   return (
     <Grid>
@@ -40,7 +40,7 @@ const ActivityDetails: React.FC<RouteComponentProps<DetailParams>> = ({
         <ActivitySideBar />
       </Grid.Column>
     </Grid>
-  );
-};
+  )
+}
 
-export default observer(ActivityDetails);
+export default observer(ActivityDetails)

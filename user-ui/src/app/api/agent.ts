@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 import { IActivity } from '../models/activity'
 import { history } from '../..'
 import { toast } from 'react-toastify'
+import { IUser, IUserFormValues } from '../models/user'
 
 axios.defaults.baseURL = 'http://localhost:5000/api/'
 
@@ -24,7 +25,7 @@ axios.interceptors.response.use(undefined, error => {
   if (status === 500) {
     toast.error('Server error -check terminal')
   }
-  throw error
+  throw error.response
 })
 
 const responseBody = (response: AxiosResponse) => response.data
@@ -65,4 +66,13 @@ const Activities = {
   delete: (id: string) => requests.del(`/activities/${id}`)
 }
 
-export default { Activities }
+//this user object will allow us to get current user, log user in and register user
+const User = {
+  current: (): Promise<IUser> => requests.get('/user'),
+  login: (user: IUserFormValues): Promise<IUser> =>
+    requests.post(`/user/login`, user),
+  register: (user: IUserFormValues): Promise<IUser> =>
+    requests.post(`/user/register`, user)
+}
+
+export default { Activities, User }
