@@ -1,26 +1,42 @@
-import React, { Fragment } from 'react'
-import { Container } from 'semantic-ui-react'
-import NavBar from './components/nav/NavBar'
-import ActivityDashboard from './components/activities/ActivityDashboard'
-import { observer } from 'mobx-react-lite'
+import React, { Fragment, useContext, useEffect } from 'react';
+import { Container } from 'semantic-ui-react';
+import NavBar from './components/nav/NavBar';
+import ActivityDashboard from './components/activities/ActivityDashboard';
+import { observer } from 'mobx-react-lite';
 import {
   Route,
   withRouter,
   RouteComponentProps,
   Switch
-} from 'react-router-dom'
-import HomePage from './HomePage'
-import ActivityForm from './components/activities/ActivityForm'
-import ActivityDetails from './components/activities/ActivityDetails'
-import NotFound from './components/misc/NotFound'
-import { ToastContainer } from 'react-toastify'
-import LoginForm from './components/user/LoginForm'
+} from 'react-router-dom';
+import HomePage from './HomePage';
+import ActivityForm from './components/activities/ActivityForm';
+import ActivityDetails from './components/activities/ActivityDetails';
+import NotFound from './components/misc/NotFound';
+import { ToastContainer } from 'react-toastify';
+import LoginForm from './components/user/LoginForm';
+import { RootStoreContext } from './app/stores/rootStore';
+import LoadingComponent from './components/misc/LoadingComponent';
+import ModalContainer from './app/modals/ModalContainer';
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
-  //using fragment is a better way to return multiple components instead of returning them in a div
+  const rootStore = useContext(RootStoreContext);
+  const { setAppLoaded, token, appLoaded } = rootStore.commonStore;
+  const { getUser } = rootStore.userStore;
+
+  useEffect(() => {
+    if (token) {
+      getUser().finally(() => setAppLoaded());
+    } else {
+      setAppLoaded();
+    }
+  }, [getUser, setAppLoaded, token]);
+
+  if (!appLoaded) return <LoadingComponent content='Loading App' />;
   return (
     //switch ensure only 1 component is ever loaded onto the page
     <Fragment>
+      <ModalContainer />
       <ToastContainer position='bottom-right' />
       <Route exact path='/' component={HomePage} />
       <Route
@@ -46,7 +62,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
         )}
       />
     </Fragment>
-  )
-}
+  );
+};
 
-export default withRouter(observer(App))
+export default withRouter(observer(App));
