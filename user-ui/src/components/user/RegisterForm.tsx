@@ -56,10 +56,7 @@ const RegisterForm = () => {
             type='password'
           />
           {submitError && !dirtySinceLastSubmit && (
-            <ErrorMessage
-              error={submitError}
-              text={JSON.stringify(submitError.data.errors)}
-            />
+            <ErrorMessage error={submitError} />
           )}
 
           <Button
