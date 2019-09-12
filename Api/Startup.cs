@@ -104,9 +104,9 @@ namespace Api
                 //app.UseHsts();
             }
 
-            //this cors is middle ware configured in services. allows only localhost 3000 to get the data from api
-            //can also write, or do anything with the data
             app.UseAuthentication();
+            //this cors is middleware configured in services. allows only localhost 3000 to get the data from api
+            //can also write, or do anything with the data
             app.UseCors("CorsPolicy");
             app.UseMvc();
         }
