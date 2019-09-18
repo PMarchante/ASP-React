@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
-namespace Domain
+namespace App.Activities
 {
-    public class Activity
-    {   
-        //guid lets you create an id from server or client side code
+    public class ActivityDto
+    {
+        
         public Guid Id {get;set;}
         public string Title {get;set;}
         public string Description {get;set;}
@@ -13,7 +14,7 @@ namespace Domain
         public DateTime Date{get;set;}
         public string City{get;set;}
         public string Venue{get;set;}
-
-        public virtual ICollection<UserActivity> UserActivities { get; set; }
+        [JsonProperty("attendees")]
+        public ICollection<AttendeeDto> UserActivities { get; set; }
     }
 }

@@ -18,6 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using AutoMapper;
 
 namespace Api
 {
@@ -35,6 +36,8 @@ namespace Api
         {
             services.AddDbContext<DataContext>(opt =>
             {
+                //this lets us use lazy loading after installing the package
+                opt.UseLazyLoadingProxies();
                 opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
             });
             //if we dont add cors, another program cannot use our API data
@@ -63,6 +66,14 @@ namespace Api
             //
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
 
+            //use this to add a new requirement so only a host of the activity can edit or delete the activity
+            services.AddAuthorization(opt =>{
+                opt.AddPolicy("IsActivityHost", policy =>{
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+
             //creates user stores
             identityBuilder.AddEntityFrameworkStores<DataContext>();
 
@@ -82,6 +93,11 @@ namespace Api
                     ValidateIssuer = false
                 };
             });
+
+
+
+            //looks in this assembly for auto mapper mapping profiles
+            services.AddAutoMapper(typeof(List.Handler));
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             

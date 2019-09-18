@@ -16,6 +16,8 @@ namespace Persistence
         public DbSet<Value> values { get; set; }
         //the DBSet makes a table modeled after Activity class and calls that table Activities
         public DbSet<Activity> Activities {get;set;}
+
+        public DbSet<UserActivity> UserActivities { get; set; }
         protected override void OnModelCreating(ModelBuilder builder){
 
             //if this isnt added, we will get an error migrating user data
@@ -27,6 +29,19 @@ namespace Persistence
                 new Value {Id=3, Name="value 3"}
             );
 
+            //this specifies the primary key in the table because it is a many to many relationship
+            builder.Entity<UserActivity>(x => x.HasKey( a=>
+            new {a.AppUserId, a.ActivityId}));
+
+            builder.Entity<UserActivity>()
+            .HasOne(u => u.AppUser)
+            .WithMany(a => a.UserActivities)
+            .HasForeignKey(u => u.AppUserId);
+
+            builder.Entity<UserActivity>()
+            .HasOne(a => a.Activity)
+            .WithMany(u => u.UserActivities)
+            .HasForeignKey(a => a.ActivityId);
         }
     }
 }
