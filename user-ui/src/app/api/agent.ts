@@ -78,7 +78,9 @@ const Activities = {
   create: (activity: IActivity) => requests.post('/activities', activity),
   update: (activity: IActivity) =>
     requests.put(`/activities/${activity.id}`, activity),
-  delete: (id: string) => requests.del(`/activities/${id}`)
+  delete: (id: string) => requests.del(`/activities/${id}`),
+  attend: (id: string) => requests.post(`/activities/${id}/attend`, {}),
+  unattend: (id: string) => requests.del(`/activities/${id}/attend`)
 };
 
 //this user object will allow us to get current user, log user in and register user
