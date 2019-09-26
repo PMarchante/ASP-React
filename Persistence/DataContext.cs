@@ -18,6 +18,7 @@ namespace Persistence
         public DbSet<Activity> Activities {get;set;}
 
         public DbSet<UserActivity> UserActivities { get; set; }
+        public DbSet<Photo> Photos {get; set;}
         protected override void OnModelCreating(ModelBuilder builder){
 
             //if this isnt added, we will get an error migrating user data
