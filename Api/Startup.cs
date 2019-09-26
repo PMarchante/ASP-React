@@ -19,6 +19,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using AutoMapper;
+using Infrastructure.Photos;
 
 namespace Api
 {
@@ -94,15 +95,18 @@ namespace Api
                 };
             });
 
-
-
             //looks in this assembly for auto mapper mapping profiles
             services.AddAutoMapper(typeof(List.Handler));
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             
-            //this will let us get the username from the token
+            //this will let us get the username from the token in user-secrets
             services.AddScoped<IUserAccessor, UserAccessor>();
+
+            //gets the cloudinary config from the  dotnet user-secrets
+            services.Configure<CloudinarySettings>(Configuration.GetSection("Cloudinary"));
+            
+            services.AddScoped<IPhotoAccessor, PhotoAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
