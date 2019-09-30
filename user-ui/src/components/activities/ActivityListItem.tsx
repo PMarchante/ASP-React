@@ -62,7 +62,7 @@ const ActivityListItem: React.FC<{ activity: IActivity }> = ({ activity }) => {
           to={`/activities/${activity.id}`}
           floated='right'
           content='view'
-          color='pink'
+          color='blue'
         />
       </Segment>
     </Segment.Group>
