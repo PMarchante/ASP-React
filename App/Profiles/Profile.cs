@@ -3,6 +3,7 @@ using Domain;
 
 namespace App.Profiles
 {
+    //properties to return in user profile
     public class Profile
     {
         public string DisplayName { get; set; }
