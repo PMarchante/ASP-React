@@ -8,8 +8,11 @@
 * ---Log in / welcome page---
 ![alt text](https://github.com/PMarchante/ASP-React/blob/master/ReadmePictures/Homepage.png)
 
-* --Sign up---
-![alt text]()
+* ---Sign up---
+![alt text](https://github.com/PMarchante/ASP-React/blob/master/ReadmePictures/sign%20up.png)
+
+# ---Log in---
+![alt text](https://github.com/PMarchante/ASP-React/blob/master/ReadmePictures/log%20in%20page.png)
 
 * ---Main page---
 ![alt text](https://github.com/PMarchante/ASP-React/blob/master/ReadmePictures/main%20page.png)
