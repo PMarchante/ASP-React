@@ -17,6 +17,9 @@ const ActivityListItem: React.FC<{ activity: IActivity }> = ({ activity }) => {
               size='tiny'
               circular
               src={host.image || '/assets/user.png'}
+              style={{ marginBottom: 3! }}
+              as={Link}
+              to={`/profiles/${host.username}`}
             />
             <Item.Content>
               <Item.Header as={Link} to={`/activities/${activity.id}`}>

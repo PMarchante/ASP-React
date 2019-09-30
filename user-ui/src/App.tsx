@@ -18,6 +18,7 @@ import LoginForm from './components/user/LoginForm';
 import { RootStoreContext } from './app/stores/rootStore';
 import LoadingComponent from './components/misc/LoadingComponent';
 import ModalContainer from './app/modals/ModalContainer';
+import ProfilePage from './components/user/ProfilePage';
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   const rootStore = useContext(RootStoreContext);
@@ -54,7 +55,8 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   //it will reinitialize the component
                 />
                 <Route path='/activities/:id' component={ActivityDetails} />
-                <Route path='/login' component={LoginForm} />
+                <Route path='/profiles/:username' component={ProfilePage} />
+
                 <Route component={NotFound} />
               </Switch>
             </Container>
