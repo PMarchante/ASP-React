@@ -11,7 +11,7 @@
 * ---Sign up---
 ![alt text](https://github.com/PMarchante/ASP-React/blob/master/ReadmePictures/sign%20up.png)
 
-# ---Log in---
+* ---Log in---
 ![alt text](https://github.com/PMarchante/ASP-React/blob/master/ReadmePictures/log%20in%20page.png)
 
 * ---Main page---
