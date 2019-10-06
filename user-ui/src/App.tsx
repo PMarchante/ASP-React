@@ -14,7 +14,6 @@ import ActivityForm from './components/activities/ActivityForm';
 import ActivityDetails from './components/activities/ActivityDetails';
 import NotFound from './components/misc/NotFound';
 import { ToastContainer } from 'react-toastify';
-import LoginForm from './components/user/LoginForm';
 import { RootStoreContext } from './app/stores/rootStore';
 import LoadingComponent from './components/misc/LoadingComponent';
 import ModalContainer from './app/modals/ModalContainer';

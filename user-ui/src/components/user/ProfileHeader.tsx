@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Segment,
   Item,
@@ -9,9 +9,8 @@ import {
   Divider,
   Reveal
 } from 'semantic-ui-react';
-
-import { RootStoreContext } from '../../app/stores/rootStore';
 import { IProfile } from '../../app/models/profile';
+import { observer } from 'mobx-react-lite';
 
 interface IProps {
   profile: IProfile;
@@ -60,4 +59,4 @@ const ProfileHeader: React.FC<IProps> = ({ profile }) => {
   );
 };
 
-export default ProfileHeader;
+export default observer(ProfileHeader);

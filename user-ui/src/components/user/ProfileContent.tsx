@@ -21,6 +21,7 @@ const ProfileContent = () => {
       menu={{ fluid: true, vertical: true }}
       menuPosition='right'
       panes={panes}
+      activeIndex={1} //sets the active default pane to the item at index 1 in the panes array
     />
   );
 };
