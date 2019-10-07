@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using AutoMapper;
 using Infrastructure.Photos;
+using Api.SignalR;
+using System.Threading.Tasks;
 
 namespace Api
 {
@@ -56,9 +58,11 @@ namespace Api
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
             })
-            
             .AddFluentValidation(config => config.RegisterValidatorsFromAssemblyContaining<Create>())
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //signalR
+            services.AddSignalR();
 
             //addidentitycore adds and configures identity system base on used type roles
             //we have to pass in the use type
@@ -92,6 +96,21 @@ namespace Api
                     IssuerSigningKey = key,
                     ValidateAudience = false,
                     ValidateIssuer = false
+                };
+                Opt.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context => 
+                    {
+                        var accessToken = context.Request.Query["access_token"];//how this is written must match client side
+                        var path = context.HttpContext.Request.Path;
+
+                        if(!string.IsNullOrEmpty(accessToken) 
+                        && path.StartsWithSegments("/chat"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
@@ -128,6 +147,8 @@ namespace Api
             //this cors is middleware configured in services. allows only localhost 3000 to get the data from api
             //can also write, or do anything with the data
             app.UseCors("CorsPolicy");
+            //uses signalR like a controller, so it needs a route
+            app.UseSignalR(routes => {routes.MapHub<ChatHub>("/chat");});
             app.UseMvc();
         }
     }

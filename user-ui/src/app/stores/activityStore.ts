@@ -6,6 +6,7 @@ import { history } from '../..';
 import { toast } from 'react-toastify';
 import { RootStore } from './rootStore';
 import { setActivityProps, createAttendee } from '../../components/misc/util';
+import { HubConnection, HubConnectionBuilder, LogLevel } from '@aspnet/signalr';
 
 export default class ActivityStore {
   rootStore: RootStore;
@@ -21,6 +22,32 @@ export default class ActivityStore {
   @observable submitting = false;
   @observable target = '';
   @observable loading = false;
+  @observable.ref hubConnection: HubConnection | null = null; //this is for signalR
+
+  @action createHubConnection = () => {
+    //congfigures and builds the signalR hub
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl('http://localhost:5000/chat', {
+        accessTokenFactory: () => this.rootStore.commonStore.token!
+      })
+      .configureLogging(LogLevel.Information)
+      .build();
+
+    //starts the signalR hub connection
+    this.hubConnection
+      .start()
+      .then(() => console.log(this.hubConnection!.state))
+      .catch(error => console.log('Error establishing connection', error));
+
+    //calls the ReceiveComment method on the Chathub class and passes the comment to it
+    this.hubConnection.on('ReceiveComment', Comment => {
+      this.activity!.comments.push(Comment);
+    });
+  };
+
+  @action stopHubConnection = () => {
+    this.hubConnection!.stop();
+  };
 
   @computed get activitiesByDate() {
     //activityRegistry is NOT an array so passing it like this lets us treat it as one

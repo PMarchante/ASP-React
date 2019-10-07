@@ -10,8 +10,16 @@ export interface IActivity {
   isGoing: boolean; //specific to currently logged in user
   isHost: boolean;
   attendees: IAttendee[];
+  comments: IComment[];
 }
-
+export interface IComment {
+  id: string;
+  createdAt: Date;
+  body: string;
+  username: string;
+  displayName: string;
+  image: string;
+}
 export interface IActivityFormValues extends Partial<IActivity> {
   time?: Date;
 }
